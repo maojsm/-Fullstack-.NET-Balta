@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dima.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDatabase : Migration
+    public partial class CreateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,6 +86,22 @@ namespace Dima.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TrafficControllers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CodeLocal = table.Column<string>(type: "VARCHAR", maxLength: 10, nullable: false),
+                    Name = table.Column<string>(type: "VARCHAR", maxLength: 30, nullable: false),
+                    Description = table.Column<string>(type: "VARCHAR", maxLength: 100, nullable: true),
+                    TenantId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrafficControllers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +229,33 @@ namespace Dima.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TcHardwareInRealtimes",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TrafficControllerId = table.Column<long>(type: "bigint", nullable: false),
+                    VoltageAcIn = table.Column<double>(type: "double precision", nullable: false),
+                    Voltage9vIn = table.Column<double>(type: "double precision", nullable: false),
+                    DoorOpen = table.Column<bool>(type: "boolean", nullable: false),
+                    FlashingYellowOn = table.Column<bool>(type: "boolean", nullable: false),
+                    CpuConnected = table.Column<bool>(type: "boolean", nullable: false),
+                    ClientIpV4 = table.Column<string>(type: "text", nullable: false),
+                    ClientPort = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TcHardwareInRealtimes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TcHardwareInRealtimes_TrafficControllers_TrafficControllerId",
+                        column: x => x.TrafficControllerId,
+                        principalTable: "TrafficControllers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityClaim_UserId",
                 table: "IdentityClaim",
@@ -247,6 +290,17 @@ namespace Dima.Api.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TcHardwareInRealtimes_TrafficControllerId",
+                table: "TcHardwareInRealtimes",
+                column: "TrafficControllerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrafficControllers_CodeLocal",
+                table: "TrafficControllers",
+                column: "CodeLocal",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transaction_CategoryId",
                 table: "Transaction",
                 column: "CategoryId");
@@ -277,10 +331,16 @@ namespace Dima.Api.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "TcHardwareInRealtimes");
+
+            migrationBuilder.DropTable(
                 name: "Transaction");
 
             migrationBuilder.DropTable(
                 name: "IdentityUser");
+
+            migrationBuilder.DropTable(
+                name: "TrafficControllers");
 
             migrationBuilder.DropTable(
                 name: "Category");

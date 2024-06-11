@@ -1,9 +1,6 @@
 using Dima.Api;
 using Dima.Api.Common.Api;
 using Dima.Api.Endpoints;
-using Dima.Core;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
@@ -12,6 +9,9 @@ builder.AddDataContexts();
 builder.AddCrossOrigin();
 builder.AddDocumentation();
 builder.AddServices();
+
+// Permite pegar o IP de queme nviou a requisição para API
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

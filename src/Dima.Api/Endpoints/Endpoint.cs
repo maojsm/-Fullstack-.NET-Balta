@@ -4,6 +4,8 @@ using Dima.Api.Endpoints.Identity;
 using Dima.Api.Endpoints.Orders;
 using Dima.Api.Endpoints.Reports;
 using Dima.Api.Endpoints.Stripe;
+using Dima.Api.Endpoints.TcHardwareInRealtimes;
+using Dima.Api.Endpoints.TrafficControllers;
 using Dima.Api.Endpoints.Transactions;
 using Dima.Api.Models;
 
@@ -65,6 +67,22 @@ public static class Endpoint
             .WithTags("Payments - Stripe")
             .RequireAuthorization()
             .MapEndpoint<CreateSessionEndpoint>();
+
+
+        endpoints.MapGroup("v1/traffic-controllers")
+            .WithTags("TrafficControllers")
+            //.RequireAuthorization()
+            .MapEndpoint<CreateTrafficControllerEndpoint>()
+            .MapEndpoint<UpdateTrafficControllerEndpoint>()
+            .MapEndpoint<DeleteTrafficControllerEndpoint>()
+            .MapEndpoint<GetTrafficControllerByIdEndpoint>()
+            .MapEndpoint<GetAllTrafficControllerEndpoint>();
+
+        endpoints.MapGroup("v1/traffic-controllers/hard-realtimes")
+            .WithTags("HardwareInRealtime")
+            //.RequireAuthorization()
+            .MapEndpoint<CreateTcHardwareInRealtimeEndpoint>()
+            .MapEndpoint<GetAllTcHardwareInRealtimeEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

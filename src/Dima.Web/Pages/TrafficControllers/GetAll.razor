@@ -1,0 +1,31 @@
+@page "/controladores"
+@inherits GetAllTrafficControllerPage
+
+<MudText Typo="Typo.h3">Controladores de Tráfego</MudText>
+<div class="d-flex justify-end">
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               StartIcon="@Icons.TwoTone.Add"
+               Href="/controladores/adicionar">
+        NOVO CONTROLADOR
+    </MudButton>
+</div>
+
+<MudDataGrid Class="mt-4"
+             Items="@TrafficControllers"
+             Dense="true">
+    <Columns>
+        <PropertyColumn Property="x => x.Id" Title="#"/>
+        <PropertyColumn Property="x => x.Name" Title="Controlador"/>
+        <PropertyColumn Property="x => x.Description" Title="Descrição" />
+        <PropertyColumn Property="x => x.CodeLocal" Title="Código Local" />
+        <TemplateColumn Class="d-flex justify-end">
+            <CellTemplate>
+                <MudIconButton
+                    Icon="@Icons.Material.Filled.Delete"
+                    Color="Color.Error"
+                    OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Name)"/>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>

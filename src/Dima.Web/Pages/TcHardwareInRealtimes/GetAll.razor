@@ -1,0 +1,111 @@
+@page "/hardware"
+@inherits GetAllTcHardwareInRealtimePage
+
+
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+
+    <MudText Class="pa-22" Typo="Typo.h4">Controladores de Tráfego em Tempo Real</MudText>
+    <br />
+       
+ 
+
+    <MudGrid>
+
+        @foreach (var ctrl in TcHardwareInRealtimeDtoList)
+        {
+            <MudItem xs="12" sm="6" md="6" lg="4">
+
+                <MudCard Class="ma-2 pa-2">
+                    <MudPaper Style="position:relative;" Elevation="0">
+                      
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudTooltip Text="@($"Id do Controlador: {ctrl.TrafficControllerId}")">
+                                    <MudText Typo="Typo.h5">@ctrl.TrafficController.Name</MudText>
+                                </MudTooltip>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudDivider />
+                        <MudCardContent>
+                            <MudTooltip Text="Nominal: 101 à 264 volts">
+                                @if (ctrl.VoltageAcIn >= 264)
+                                {
+                                    <MudText Typo="Typo.h6" Color="Color.Error">Tensão de Entrada: @ctrl.VoltageAcIn volts</MudText>
+                                }
+                                else if (ctrl.VoltageAcIn <= 101)
+                                {
+                                    <MudText Typo="Typo.h6" Color="Color.Warning">Tensão de Entrada: @ctrl.VoltageAcIn volts</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.h6">Tensão de Entrada: @ctrl.VoltageAcIn volts</MudText>
+                                }                              
+                            </MudTooltip>
+                            <MudSpacer />
+
+                            <MudTooltip Text="Padrão: 8,5 à 9,8 volts">
+                                @if (ctrl.VoltageAcIn >= 9.8)
+                                {
+                                    <MudText Typo="Typo.h6" Color="Color.Error">Fonte Principal: @ctrl.Voltage9vIn volts</MudText>
+                                }
+                                else if (ctrl.VoltageAcIn < 8.5)
+                                {
+                                    <MudText Typo="Typo.h6" Color="Color.Warning">Fonte Principal: @ctrl.Voltage9vIn volts</MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.h6">Fonte Principal: @ctrl.Voltage9vIn volts</MudText>
+                                }                              
+                            </MudTooltip>
+                            <MudSpacer />
+
+                            <MudText Typo="Typo.h6">
+                                Amarelo Intermitente:
+                                <MudTooltip Text="@(ctrl.FlashingYellowOn ? "Controlador em Amarelo Intermitente: Verifique!" : "Não está em Amarelo Intermitente.")">
+                                    <MudIcon Icon="@((ctrl.FlashingYellowOn ? Icons.Material.Filled.Lightbulb : Icons.Material.Filled.Lightbulb))"
+                                             Color="@(ctrl.FlashingYellowOn ? Color.Warning : Color.Default)">
+                                    </MudIcon>
+                                </MudTooltip>
+                            </MudText>
+                            <MudSpacer />
+
+                            <MudTooltip Text="Porta física do controlador semafórico">
+                                <MudText Typo="Typo.h6">
+                                    Porta do Controlador: @(ctrl.DoorOpen ? "Aberta" : "Fechada")
+                                </MudText>
+                            </MudTooltip>
+                            <MudSpacer />
+                            <MudTooltip Text="Módulo Lógico/CPU do Controlador">
+                                <MudText Typo="Typo.h6">
+                                    CPU Conectada: @(ctrl.CpuConnected ? "Sim" : "Não")
+                                </MudText>
+                            </MudTooltip>
+                            <MudSpacer />
+                            <MudTooltip Text="IP Externo do Controlador">
+                                <MudText Typo="Typo.h6">
+                                    IP: @ctrl.ClientIpV4
+                                </MudText>
+                            </MudTooltip>
+
+                        </MudCardContent>
+                        <MudCardActions Style="display: flex; justify-content: flex-end;">
+                            <MudTooltip Text="Última atualização dos dados">
+                                <MudText Typo="Typo.caption">@ctrl.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")</MudText>
+                            </MudTooltip>
+                        </MudCardActions>
+                        <MudOverlay Visible="!ctrl.TcpConnected" DarkBackground="true" Absolute="true">
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" FullWidth>
+                                DESCONECTADO
+                            </MudButton>
+                        </MudOverlay>
+                    </MudPaper>
+                </MudCard>
+            </MudItem>
+         
+        }
+    </MudGrid>
+</MudContainer>

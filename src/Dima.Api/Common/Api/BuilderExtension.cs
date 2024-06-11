@@ -29,7 +29,10 @@ public static class BuilderExtension
     public static void AddDocumentation(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(x => { x.CustomSchemaIds(n => n.FullName); });
+        builder.Services.AddSwaggerGen(x => 
+        {
+            x.CustomSchemaIds(n => n.FullName); 
+        });
     }
 
     public static void AddSecurity(this WebApplicationBuilder builder)
@@ -91,5 +94,14 @@ public static class BuilderExtension
         builder
             .Services
             .AddTransient<IStripeHandler, StripeHandler>();
+
+        builder
+           .Services
+           .AddTransient<ITrafficControllerHandler, TrafficControllerHandler>();
+
+        builder
+            .Services
+            .AddTransient<ITcHardwareInRealtimeHandler, TcHardwareInRealTimeHandler>();
+
     }
 }

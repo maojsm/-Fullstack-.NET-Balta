@@ -26,6 +26,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<IncomesByCategory> IncomesByCategories { get; set; } = null!;
     public DbSet<ExpensesByCategory> ExpensesByCategories { get; set; } = null!;
 
+    public DbSet<TrafficController> TrafficControllers { get; set; } = null!;
+    public DbSet<TcHardwareInRealtime> TcHardwareInRealtimes { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

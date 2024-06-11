@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Dima.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240611105330_InitialDatabase2")]
-    partial class InitialDatabase2
+    [Migration("20240611200434_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -224,6 +224,82 @@ namespace Dima.Api.Migrations
                     b.ToView("vwGetIncomesByCategory", (string)null);
                 });
 
+            modelBuilder.Entity("Dima.Core.Models.TcHardwareInRealtime", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ClientIpV4")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ClientPort")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("CpuConnected")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("DoorOpen")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("FlashingYellowOn")
+                        .HasColumnType("boolean");
+
+                    b.Property<long>("TrafficControllerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Voltage9vIn")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("VoltageAcIn")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrafficControllerId");
+
+                    b.ToTable("TcHardwareInRealtimes", (string)null);
+                });
+
+            modelBuilder.Entity("Dima.Core.Models.TrafficController", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CodeLocal")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(100)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodeLocal")
+                        .IsUnique();
+
+                    b.ToTable("TrafficControllers", (string)null);
+                });
+
             modelBuilder.Entity("Dima.Core.Models.Transaction", b =>
                 {
                     b.Property<long>("Id")
@@ -405,6 +481,17 @@ namespace Dima.Api.Migrations
                     b.ToTable("IdentityUserToken", (string)null);
                 });
 
+            modelBuilder.Entity("Dima.Core.Models.TcHardwareInRealtime", b =>
+                {
+                    b.HasOne("Dima.Core.Models.TrafficController", "TrafficController")
+                        .WithMany("TcHardwareInRealtimes")
+                        .HasForeignKey("TrafficControllerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TrafficController");
+                });
+
             modelBuilder.Entity("Dima.Core.Models.Transaction", b =>
                 {
                     b.HasOne("Dima.Core.Models.Category", "Category")
@@ -462,6 +549,11 @@ namespace Dima.Api.Migrations
             modelBuilder.Entity("Dima.Api.Models.User", b =>
                 {
                     b.Navigation("Roles");
+                });
+
+            modelBuilder.Entity("Dima.Core.Models.TrafficController", b =>
+                {
+                    b.Navigation("TcHardwareInRealtimes");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,39 @@
+@page "/controladores/adicionar"
+@inherits CreateTrafficControllerPage
+
+<MudText Typo="Typo.h3">Novo Controlador de Tráfego</MudText>
+
+<MudPaper Class="pa-8 mt-4">
+    <EditForm Model="@InputModel" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+
+        <MudTextField Label="Código Local"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.CodeLocal"
+                      For="@(() => InputModel.CodeLocal)" />
+
+        <MudTextField Label="Título"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.Name"
+                      For="@(() => InputModel.Name)"/>
+
+        <MudTextField Label="Descrição"
+                      Lines="5"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.Description"
+                      For="@(() => InputModel.Description)"/>
+        
+        @if (IsBusy)
+        {
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+        }
+        else
+        {
+            <MudButton ButtonType="ButtonType.Submit"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary">
+                Salvar
+            </MudButton>
+        }
+    </EditForm>
+</MudPaper>

@@ -26,6 +26,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="Pages\TcHardwareInRealtimes\Create.razor" />
+      <None Include="Pages\TcHardwareInRealtimes\GetAll.razor" />
+      <None Include="Pages\TrafficControllers\Create.razor" />
+      <None Include="Pages\TrafficControllers\GetAll.razor" />
+      <None Include="wwwroot\jsm_Icone.ico" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\Dima.Core\Dima.Core.csproj" />
     </ItemGroup>
 

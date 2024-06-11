@@ -1,0 +1,50 @@
+@page "/hardware/adicionar"
+@inherits CreateTcHardwareInRealtimePage
+
+<MudText Typo="Typo.h3">Novos dados de Hardware em Tempo Real (Manual)</MudText>
+
+<MudPaper Class="pa-8 mt-4">
+    <EditForm Model="@InputModel" OnValidSubmit="OnValidSubmitAsync">
+        <DataAnnotationsValidator />
+
+        <MudTextField Label="ID do Controlador de Tráfego"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.TrafficControllerId"
+                      For="@(() => InputModel.TrafficControllerId)" />
+
+        <MudTextField Label="Tensão AC Entrada"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.VoltageAcIn"
+                      For="@(() => InputModel.VoltageAcIn)" />
+
+        <MudTextField Label="Tensão 9V Entrada"
+                      HelperText="Campo obrigatório"
+                      @bind-Value="InputModel.Voltage9vIn"
+                      For="@(() => InputModel.Voltage9vIn)" />
+
+        <MudSwitch Label="Porta Aberta"
+                   @bind-Value="InputModel.DoorOpen"
+                   For="@(() => InputModel.DoorOpen)" />
+
+        <MudSwitch Label="Luz Amarela Piscando"
+                   @bind-Value="InputModel.FlashingYellowOn"
+                   For="@(() => InputModel.FlashingYellowOn)" />
+
+        <MudSwitch Label="CPU Conectada"
+                   @bind-Value="InputModel.CpuConnected"
+                   For="@(() => InputModel.CpuConnected)" />
+
+        @if (IsBusy)
+        {
+            <MudProgressCircular Indeterminate="true" Color="Color.Primary" />
+        }
+        else
+        {
+            <MudButton ButtonType="ButtonType.Submit"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary">
+                Salvar
+            </MudButton>
+        }
+    </EditForm>
+</MudPaper>
