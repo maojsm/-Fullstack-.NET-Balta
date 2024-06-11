@@ -2,6 +2,8 @@ using Dima.Api;
 using Dima.Api.Common.Api;
 using Dima.Api.Endpoints;
 using Dima.Core;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
@@ -21,3 +23,5 @@ app.UseSecurity();
 app.MapEndpoints();
 
 app.Run();
+
+

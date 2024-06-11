@@ -23,9 +23,12 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
             {
                 UserId = request.UserId,
                 CategoryId = request.CategoryId,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 Amount = request.Amount,
-                PaidOrReceivedAt = request.PaidOrReceivedAt,
+                PaidOrReceivedAt = request.PaidOrReceivedAt.HasValue
+                    ? DateTime.SpecifyKind(request.PaidOrReceivedAt.Value, DateTimeKind.Utc)
+                    : (DateTime?)null,
+
                 Title = request.Title,
                 Type = request.Type
             };
@@ -59,7 +62,9 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
             transaction.Amount = request.Amount;
             transaction.Title = request.Title;
             transaction.Type = request.Type;
-            transaction.PaidOrReceivedAt = request.PaidOrReceivedAt;
+            transaction.PaidOrReceivedAt = request.PaidOrReceivedAt.HasValue
+                    ? DateTime.SpecifyKind(request.PaidOrReceivedAt.Value, DateTimeKind.Utc)
+                    : (DateTime?)null;
 
             context.Transactions.Update(transaction);
             await context.SaveChangesAsync();
@@ -118,6 +123,9 @@ public class TransactionHandler(AppDbContext context) : ITransactionHandler
         {
             request.StartDate ??= DateTime.Now.GetFirstDay();
             request.EndDate ??= DateTime.Now.GetLastDay();
+
+            //request.StartDate ??= DateTime.SpecifyKind(DateTime.Now.GetFirstDay(), DateTimeKind.Utc);
+            //request.EndDate ??= DateTime.SpecifyKind(DateTime.Now.GetLastDay(), DateTimeKind.Utc);
         }
         catch
         {

@@ -24,8 +24,11 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
             .HasColumnType("DECIMAL");
         builder.Property(x => x.CreatedAt)
             .IsRequired(true);
+
         builder.Property(x => x.PaidOrReceivedAt)
             .IsRequired(false);
+
+
         builder.Property(x => x.UserId)
             .IsRequired(true)
             .HasColumnType("VARCHAR")

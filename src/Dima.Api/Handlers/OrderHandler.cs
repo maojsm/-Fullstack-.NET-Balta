@@ -21,14 +21,14 @@ public class OrderHandler(
         {
             var order = new Order
             {
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                 ExternalReference = "",
                 Amount = 799.90M,
                 UserId = request.UserId,
                 Gateway = EPaymentGateway.Stripe,
                 Number = Guid.NewGuid().ToString()[0..8],
                 Status = EOrderStatus.WaitingPayment,
-                UpdatedAt = DateTime.Now
+                UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
             };
 
             await context.Orders.AddAsync(order);
@@ -73,7 +73,7 @@ public class OrderHandler(
             return new Response<Order?>(null, 400, "Este pedido ainda não foi pago");
 
         order.Status = EOrderStatus.Paid;
-        order.UpdatedAt = DateTime.Now;
+        order.UpdatedAt = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
         order.ExternalReference = charge.Id;
 
         context.Orders.Update(order);
