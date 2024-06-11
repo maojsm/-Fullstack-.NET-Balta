@@ -9,7 +9,7 @@ namespace Dima.Api.Endpoints.TrafficControllers
     public class DeleteTrafficControllerEndpoint : IEndpoint
     {
         public static void Map(IEndpointRouteBuilder app)
-            => app.MapPost("/{id}", HandleAsync)
+            => app.MapDelete("/{id}", HandleAsync)
                 .WithName("TrafficControllers: Delete")
                 .WithSummary("Exclui um Controlador de Tráfego")
                 .WithDescription("Exclui um Controlador de Tráfego")
