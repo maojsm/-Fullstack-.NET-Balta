@@ -15,12 +15,12 @@ public class CategoryMapping : IEntityTypeConfiguration<Category>
 
         builder.Property(x => x.Title)
             .IsRequired(true)
-            .HasColumnType("NVARCHAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(80);
         
         builder.Property(x => x.Description)
             .IsRequired(false)
-            .HasColumnType("NVARCHAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(255);
         
         builder.Property(x => x.UserId)

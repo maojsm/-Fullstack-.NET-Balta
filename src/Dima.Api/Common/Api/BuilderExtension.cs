@@ -46,7 +46,7 @@ public static class BuilderExtension
         builder
             .Services
             .AddDbContext<AppDbContext>(
-                x => { x.UseSqlServer(Configuration.ConnectionString); });
+                x => { x.UseNpgsql(Configuration.ConnectionString); });
         builder.Services
             .AddIdentityCore<User>()
             .AddRoles<IdentityRole<long>>()

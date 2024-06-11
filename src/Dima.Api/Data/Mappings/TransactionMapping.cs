@@ -14,14 +14,14 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
 
         builder.Property(x => x.Title)
             .IsRequired(true)
-            .HasColumnType("NVARCHAR")
+            .HasColumnType("VARCHAR")
             .HasMaxLength(80);
         builder.Property(x => x.Type)
             .IsRequired(true)
             .HasColumnType("SMALLINT");
         builder.Property(x => x.Amount)
             .IsRequired(true)
-            .HasColumnType("MONEY");
+            .HasColumnType("DECIMAL");
         builder.Property(x => x.CreatedAt)
             .IsRequired(true);
         builder.Property(x => x.PaidOrReceivedAt)
